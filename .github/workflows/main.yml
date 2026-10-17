@@ -1,0 +1,22 @@
+
+name: Blue Red Multiplayer - Check Project
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  check-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          test -f project.godot
+          test -f Main.tscn
+          test -f Player.gd
+          echo "Project files found"
+          
