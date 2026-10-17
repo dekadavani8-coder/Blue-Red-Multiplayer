@@ -1,0 +1,34 @@
+
+extends CanvasLayer
+
+signal move_input(direction: Vector2)
+signal look_input(delta: Vector2)
+
+var move_touch := -1
+var look_touch := -1
+var move_origin := Vector2.ZERO
+var move_vector := Vector2.ZERO
+
+func _input(event: InputEvent) -> void:
+    if event is InputEventScreenTouch:
+        if event.pressed:
+            if event.position.x < get_viewport().get_visible_rect().size.x * 0.45:
+                if move_touch == -1:
+                    move_touch = event.index
+                    move_origin = event.position
+            elif look_touch == -1:
+                look_touch = event.index
+        else:
+            if event.index == move_touch:
+                move_touch = -1
+                move_vector = Vector2.ZERO
+                move_input.emit(move_vector)
+            if event.index == look_touch:
+                look_touch = -1
+
+    elif event is InputEventScreenDrag:
+        if event.index == move_touch:
+            move_vector = (event.position - move_origin).limit_length(80.0) / 80.0
+            move_input.emit(move_vector)
+        elif event.index == look_touch:
+            look_input.emit(event.relative)
