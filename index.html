@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blue-Red Multiplayer</title>
+<style>
+body{margin:0;background:#101827;color:white;font-family:Arial;text-align:center}
+h1{color:#42a5ff}
+button{padding:14px;margin:6px;border:0;border-radius:10px;font-weight:bold}
+.blue{background:#1687ff;color:white}
+.red{background:#f44336;color:white}
+#arena{height:55vh;min-height:300px;background:#263449;position:relative;overflow:hidden;border:3px solid #42a5ff}
+.player{position:absolute;width:34px;height:34px;border-radius:8px}
+#me{background:#1687ff;left:45%;top:45%}
+#enemy{background:#f44336;left:70%;top:30%}
+#status{color:#ffd54f}
+</style>
+</head>
+<body>
+<h1>BLUE-RED</h1>
+<p>Game tembak-tembakan mini</p>
+<p id="status">Mode latihan — 1 pemain</p>
+<div id="arena">
+<div id="me" class="player"></div>
+<div id="enemy" class="player"></div>
+</div>
+<div>
+<button onclick="move(0,-15)">⬆️</button><br>
+<button onclick="move(-15,0)">⬅️</button>
+<button onclick="move(0,15)">⬇️</button>
+<button onclick="move(15,0)">➡️</button>
+</div>
+<button class="red" onclick="shoot()">TEMBAK 🔫</button>
+<button onclick="resetGame()">ULANG</button>
+<p id="score">Skor: 0</p>
+<script>
+let x=45,y=45,score=0;
+const me=document.getElementById('me');
+const enemy=document.getElementById('enemy');
+const arena=document.getElementById('arena');
+function move(dx,dy){
+x=Math.max(0,Math.min(90,x+dx/3));
+y=Math.max(0,Math.min(90,y+dy/3));
+me.style.left=x+'%';me.style.top=y+'%';
+}
+function shoot(){
+const ex=parseFloat(enemy.style.left||70);
+const ey=parseFloat(enemy.style.top||30);
+if(Math.abs(x-ex)<30&&Math.abs(y-ey)<30){
+score++;document.getElementById('score').textContent='Skor: '+score;
+enemy.style.left=(10+Math.random()*75)+'%';
+enemy.style.top=(10+Math.random()*75)+'%';
+}else{
+document.getElementById('status').textContent='Tembakan meleset!';
+}
+}
+function resetGame(){
+x=45;y=45;score=0;
+me.style.left=x+'%';me.style.top=y+'%';
+enemy.style.left='70%';enemy.style.top='30%';
+document.getElementById('score').textContent='Skor: 0';
+document.getElementById('status').textContent='Mode latihan — 1 pemain';
+}
+</script>
+</body>
+  </html>
